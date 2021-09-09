@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html style='height: 100%;'>
+  <head>
+    <meta charset="UTF-8">
+    <title>Manage</title>
+    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+  </head>
+  <link rel="stylesheet" href="style.css">
+
+  <body id='body' style='height: 90%; margin: 0px; background-image: url("logo.png"); background-repeat: no-repeat; background-position: center; background-attachment: fixed; font-family: system-ui;'>
+    <div class="title-bar">
+      <div class="hor">
+        <p id="users-count"></p>
+        <p class="button" id="refresh-button">Refresh</p>
+      </div>
+      <div class="hor">
+        <input id="passphrase-input" type="password" placeholder="16-character passphrase" />
+        <p class="button" id="passphrase-button">Submit Passphrase</p> 
+        <p class="button" id="onboard-button" style="display: none">Onboard Participant</p> 
+      </div>
+      <p id="online-warning"></p>
+    </div>
+    <div id='main'>
+      
+    </div>
+  </body>
+  <script src='./page.js'></script>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Onboarding</title>
+        <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="script-src 'self' 'unsafe-inline';"
+        />
+    </head>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: system-ui;
+        }
+        img {
+            width: 80%;
+        }
+        input {
+            margin: 4px;
+        }
+        inputs {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+    <body id="body">
+        <div id="inputs">
+            <div>
+                <label>Participant ID:</label>
+                <input id="part-id" />
+            </div>
+            <input
+                type="button"
+                id="generate-code-button"
+                value="Register and Generate Keys"
+                onclick="register()"
+            />
+        </div>
+        <image id="code-image" />
+        <p id="verification-code"></p>
+    </body>
+    <script src="./onboarding.js"></script>
+</html>

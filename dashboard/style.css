@@ -1,0 +1,139 @@
+table {
+    width: 100%;
+    cursor: default;
+    table-layout: fixed;
+}
+table,
+th,
+td {
+    /* border: 1px solid darkgray; */
+    border-collapse: collapse;
+    text-align: left;
+}
+thead {
+    /* border-bottom-color: lightgray;
+      border-bottom-style: solid;
+      border-bottom-width: 1px; */
+}
+/* table thead {
+      position: fixed;
+    } */
+td,
+th {
+    padding: 12px 14px;
+    font-weight: normal;
+    border-bottom-style: dashed;
+    border-bottom-color: rgb(246, 246, 246);
+    border-bottom-width: 1px;
+    border-right-style: dashed;
+    border-right-color: rgb(246, 246, 246);
+    border-right-width: 1px;
+}
+td:last-child,
+th:last-child {
+    border-right: none;
+}
+tr:hover {
+    background-color: rgb(236, 248, 255);
+}
+
+thead > tr:hover {
+    background-color: unset;
+}
+
+tr .default-hidden {
+    opacity: 0%;
+}
+tr:hover .default-hidden {
+    opacity: 100%;
+}
+/* tr:nth-child(even) {background-color: #f2f2f2;} */
+button {
+    margin: 10px;
+}
+.title-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    position: fixed;
+    width: 98%;
+    height: 44px;
+}
+.button {
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 8px;
+    margin-right: 8px;
+    color: gray;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    /* background-color: rgb(82, 206, 119); */
+}
+.button:hover {
+    color: rgb(96, 183, 233);
+}
+.button:active {
+    color: rgb(2, 37, 58);
+}
+#main {
+    position: fixed;
+    top: 40px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    overflow: auto;
+}
+.number {
+    text-align: right;
+    width: 110px;
+}
+p {
+    margin: 0px;
+}
+#users-count {
+    margin-left: 14px;
+}
+.time-label {
+    width: 120px;
+}
+.username-label {
+    width: 150;
+}
+.username-label {
+    width: 150px;
+}
+.clickable {
+    cursor: pointer;
+}
+.clickable:hover {
+    color: rgb(96, 183, 233);
+}
+.clickable:active {
+    color: rgb(2, 37, 58);
+}
+.tableFixHead {
+    overflow-y: auto;
+    height: 100px;
+}
+.tableFixHead thead th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    -webkit-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+}
+#online-warning {
+    background-color: rgb(209, 49, 49);
+    border-radius: 6px;
+    padding: 2px 5px;
+    color: white;
+    display: none;
+    justify-self: flex-end;
+}
+.hor {
+    display: flex;
+    flex-direction: row;
+}
