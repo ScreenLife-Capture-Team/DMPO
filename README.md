@@ -1,6 +1,6 @@
 ## DMPO: Data management and participant onboarding system
 
-This tool was created to aid in the facilitation of screenomic studies. It was developed using Electron, and can either be run through Electron directly, or through a pre-packaged .exe file.
+This tool was created to aid in the facilitation of ScreenLife Capture studies. It was developed using Electron, and can either be run through Electron directly, or through a pre-packaged .exe file.
 
 #### Build and run with Electron.
 
