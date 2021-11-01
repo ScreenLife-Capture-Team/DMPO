@@ -189,6 +189,13 @@ function render() {
         }
         actionContainer.appendChild(button)
 
+        button = createNode("p", "Clear Bucket", "button default-hidden")
+        button.onclick = () => {
+            console.log("clearing bucket")
+            ipcRenderer.invoke("clear-bucket", user)
+        }
+        actionContainer.appendChild(button)
+
         tr.appendChild(actionContainer)
         tableBody.appendChild(tr)
     }

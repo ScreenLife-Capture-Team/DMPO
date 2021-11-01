@@ -448,3 +448,38 @@ ipcMain.handle("set-passphrase", async (event, args) => {
     PASSPHRASE = passphrase;
     return true;
 })
+
+const deleteFiles = async (files) => (
+    new Promise((resolve) => { 
+        let numLeft = files.length
+        files.forEach((f, i) => {
+            setTimeout(() => {
+                console.log("Deleting", f.name)
+                f.delete({}, async () => {
+                    numLeft --; 
+                    if (numLeft == 0) {
+                        resolve()
+                    }
+                })
+            }, Math.floor(i/500)*2000)
+        })
+    })
+)
+
+ipcMain.handle("clear-bucket", async (event, args) => {
+    console.log("Clearing bucket of user", args)
+    const fileOptions = { directory: `${args.username}/`}
+    const files = (await storage.bucket(BUCKETID).getFiles(fileOptions))[0]
+    const numFiles = files.length
+    const response = dialog.showMessageBoxSync(BrowserWindow.getAllWindows()[0], { 
+        message: `Are you sure you want to clear the user ${args.username}'s bucket with ${numFiles} images?`, 
+        buttons:[ "Yes", "No"], 
+        type: "warning"
+    })
+    if (response == 0)  {
+        await deleteFiles(files)
+        data = await fetchData()
+        data = updateLocalFiles(data)
+        event.sender.send("update-data", data)
+    }
+});
