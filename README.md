@@ -31,5 +31,5 @@ If this folder is not detected, automated censoring options will not be present 
 
 ##### To download the pre-packaged .exe, use the download link below.
 
-[Windows 64-bit](https://drive.google.com/file/d/1jv1pKAYxMObT7EVg7w1mFMb2Ee092JN6/view?usp=sharing)
+[To be updated](TBC)
 
