@@ -468,11 +468,12 @@ const deleteFiles = async (files) => (
 
 ipcMain.handle("clear-bucket", async (event, args) => {
     console.log("Clearing bucket of user", args)
-    const fileOptions = { directory: `${args.username}/`}
+    const username = args.hashedKey.slice(0, 8)
+    const fileOptions = { directory: `${username}/`}
     const files = (await storage.bucket(BUCKETID).getFiles(fileOptions))[0]
     const numFiles = files.length
     const response = dialog.showMessageBoxSync(BrowserWindow.getAllWindows()[0], { 
-        message: `Are you sure you want to clear the user ${args.username}'s bucket with ${numFiles} images?`, 
+        message: `Are you sure you want to clear the user ${username}'s bucket with ${numFiles} images?`, 
         buttons:[ "Yes", "No"], 
         type: "warning"
     })
