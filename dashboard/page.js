@@ -107,7 +107,7 @@ function render() {
     button.id = "decrypt-all-button"
     button.onclick = () => {
         data.forEach(async (user) => {
-            ipcRenderer.invoke("decrypt-for-user", {...user, acensor: cancensor} )
+            ipcRenderer.invoke("decrypt-for-user", {...user, acensor: canCensor} )
         })
     }
     buttonBox.appendChild(button)
