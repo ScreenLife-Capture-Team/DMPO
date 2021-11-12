@@ -276,7 +276,7 @@ const decrypt = async (event, args) => {
         fs.mkdirSync(destFolderName, { recursive: true })
 
     let process = spawn(javaPath, [`Decryptor`, `${key}`, `${folderName}`, destFolderName], )
-    event.sender.send("update-status", "Started decryping..")
+    event.sender.send("update-status", "Started decrypting..")
     process.stdout.on("data", data => console.log("data", data.toString()))
     // process.stdout.on("data", data => {})
     process.stderr.on("data", data => {
