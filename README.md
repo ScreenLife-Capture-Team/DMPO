@@ -28,8 +28,3 @@ parent-folder
 ```
 
 If this folder is not detected, automated censoring options will not be present in the DMPO software.
-
-##### To download the pre-packaged .exe, use the download link below.
-
-[To be updated](TBC)
-
