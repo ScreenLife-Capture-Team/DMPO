@@ -150,7 +150,7 @@ function render() {
 
         const aCensoredCount = createNode("td", user.cleanedAutomatedCount == 0 ? "" : user.cleanedAutomatedCount, "number clickable")
         aCensoredCount.onclick = () => {
-            ipcRenderer.invoke("open-in-explorer", "./cleaned_automated/" + user.username)
+            ipcRenderer.invoke("open-in-explorer", "./cleaned_automated/" + user.hashedKey.slice(0, 8))
         }
         tr.appendChild(aCensoredCount)
 
