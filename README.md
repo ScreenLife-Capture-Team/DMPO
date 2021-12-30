@@ -11,11 +11,12 @@ This tool was created to aid in the facilitation of ScreenLife Capture studies. 
 
 ##### Instructions to run with Electron
 
-1. Clone the repository to your local device.
-2. Use the command `npm install` to install dependencies.
-3. Add the required credential file (bucket_key.json).
-4. Duplicate / Rename the `default-settings.json` file to `settings.json`, and modify the file as necessary.
-5. Use the command `npm start` or `electron .` to start the program.
+1. Clone this repository to your local device using the [Git](https://git-scm.com/) GUI tool. Go to "Clone Existing Repository", set the source location as "https://github.com/ScreenLife-Capture-Team/DMPO" and a "Target Directory" (e.g. folder) of your choice.
+2. Open Windows Powershell and set the working directory to the folder in which the DMPO is stored. Instructions can be found [here](https://docs.microsoft.com/en-us/powershell/scripting/samples/managing-current-location?view=powershell-7.2). 
+3. Use the command `npm install` to install dependencies.
+4. Use the command `npm start` or `electron .` to start the program.
+
+Note: Please ensure that the bucket_key.json and settings.json files have been included and updated in your DMPO folder.
 
 ##### The information on how to use the automated censoring scripts can be found here:
 https://github.com/ScreenLife-Capture-Team/censoring-scripts
