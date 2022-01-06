@@ -116,10 +116,14 @@ ipcMain.handle("fetch-data", async (event, args) => {
 });
 
 ipcMain.handle("download-images", async (event, args) => {
+    console.log('Current queue', downloadQueue)
     console.log("Downloading", args.hashedKey)
     downloadQueue.push(args)
     if (downloadQueue.length == 1) {
+        console.log("Starting immediate download")
         download(args)
+    } else {
+        console.log("In queue:", downloadQueue.length)
     }
 });
 
