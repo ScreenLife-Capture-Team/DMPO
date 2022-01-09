@@ -116,7 +116,6 @@ ipcMain.handle("fetch-data", async (event, args) => {
 });
 
 ipcMain.handle("download-images", async (event, args) => {
-    console.log('Current queue', downloadQueue)
     console.log("Downloading", args.hashedKey)
     downloadQueue.push(args)
     if (downloadQueue.length == 1) {
@@ -136,7 +135,8 @@ const download = async (args) => {
 
     const markDownloaded = () => {
         downloadedCount += 1
-        if (downloadedCount == args.count) {
+        if (downloadedCount == args.numberInBucket) {
+            console.log('Finished download of', args)
             downloadQueue.shift()
             if (downloadQueue.length > 0) 
                 download(downloadQueue[0])
