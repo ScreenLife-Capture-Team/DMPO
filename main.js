@@ -91,10 +91,12 @@ const fetchData = async (event = null) => {
 
     imageData.forEach((v, i) => {
         userData[i].numberInBucket = v.length;
-        const filename = v[v.length - 1]?.name
-        const date = filename.substring(filename.length-23, filename.length-4)
-        const dC = date?.split("_")
-        userData[i].timeSince = timePassedFromDate(new Date(dC[0], dC[1]-1, dC[2], dC[3], dC[4], dC[5]))
+        if (v.length > 0) {
+            const filename = v[v.length - 1]?.name
+            const date = filename.substring(filename.length-23, filename.length-4)
+            const dC = date?.split("_")
+            userData[i].timeSince = timePassedFromDate(new Date(dC[0], dC[1]-1, dC[2], dC[3], dC[4], dC[5]))
+        }
     })
 
     return Object.values(userData)
@@ -191,8 +193,10 @@ const watch = async (data, folderPath, name) => {
     const userFiles = await Promise.all(userFolders.map(un => getFiles(folderPath, un)))
     const userNumFiles = userFolders.reduce((a, f, i) => ({ ...a, [f]: userFiles[i].length }), {})
     const dataWithNumFiles = data.map((d) => {
-        val = (userFolders.includes(d.hashedKey.slice(0, 8))) ? userNumFiles[d.hashedKey.slice(0, 8)] : 0
-        d[name] = val
+        if (d.hashedKey) {
+            val = (userFolders.includes(d.hashedKey.slice(0, 8))) ? userNumFiles[d.hashedKey.slice(0, 8)] : 0
+            d[name] = val
+        }
         return d
     })
     const usersNotInData = userFolders.filter(u => !(data.map(d => d.hashedKey.slice(0, 8)).includes(u)))
