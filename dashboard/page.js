@@ -42,13 +42,13 @@ function main() {
     })
 
     setInterval(() => {
-        electron.ipcRenderer.invoke("fetch-data", { full: false })
-        .then(d => {
-           if (JSON.stringify(d) !== JSON.stringify(data)) {
-               data = d
-               render()
-           }
-        }) 
+        // electron.ipcRenderer.invoke("fetch-data", { full: false })
+        // .then(d => {
+        //    if (JSON.stringify(d) !== JSON.stringify(data)) {
+        //        data = d
+        //        render()
+        //    }
+        // }) 
         electron.ipcRenderer.invoke("is-online")
         .then(online => {
             if (online && data.some(d => (d.decryptedCount && d.decryptedCount != 0) || (d.cleanedAutomatedCount && d.cleanedAutomatedCount != 0))) {
