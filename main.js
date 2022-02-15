@@ -4,10 +4,12 @@ const { Storage } = require("@google-cloud/storage");
 const { timePassedFromDate } = require("./util");
 const checkInternetConnected = require('check-internet-connected');
 const bcrypt = require('bcrypt');
+const { Downloader } = require("./downloader");
 
-let downloadQueue = []
 let decryptionQueue = []
 let censoringQueue = []
+
+const downloader = new Downloader()
 
 let settings = {}
 if (fs.existsSync("settings.json")) {
@@ -119,59 +121,12 @@ ipcMain.handle("fetch-data", async (event, args) => {
 
 ipcMain.handle("download-images", async (event, args) => {
     console.log("Downloading", args.hashedKey)
-    downloadQueue.push(args)
-    if (downloadQueue.length == 1) {
-        console.log("Starting immediate download")
-        download(args)
-    } else {
-        console.log("In queue:", downloadQueue.length)
-    }
-});
-
-const download = async (args) => {
     const fileOptions = { directory: `${args.hashedKey.slice(0, 8)}` }
-    console.log('BUCKETID', BUCKETID)
     const files = (await storage.bucket(BUCKETID).getFiles(fileOptions))[0]
-    console.log('download', files)
-    let downloadedCount = 0
-
-    const markDownloaded = () => {
-        downloadedCount += 1
-        if (downloadedCount == args.numberInBucket) {
-            console.log('Finished download of', args)
-            downloadQueue.shift()
-            if (downloadQueue.length > 0) 
-                download(downloadQueue[0])
-        } else {
-            downloadNextFile()
-        }
-    }
-
-    const downloadNextFile = () => {
-        const file = files.shift()
-        if (!file) return
-        const dest = `./encrypted/${file.name}`
-        fs.stat(dest, (err, stats) => {
-            if (!err && stats.size > 0) { 
-                // if the file already exists, count it as downloaded
-                markDownloaded()
-                return
-            }
-            file.download({ destination: dest, }, markDownloaded)
-        })
-    }
-    
-    fs.mkdir(`./encrypted/${args.hashedKey.slice(0,8)}`, { recursive: true}, () => {
-        if (files.length == 0) {
-            downloadQueue.shift()
-            if (downloadQueue.length > 0) 
-                download(downloadQueue[0])
-        }
-        for (let fileIndex in files) {
-            if (fileIndex < 1000) downloadNextFile()
-        }
-    })
-}
+    downloader.addFilesToQueue(files)
+    downloader.printQueue()
+    downloader.startDownloading()
+});
 
 const getFiles = (folderPath, username) => (new Promise((resolve) => {
     fs.readdir(`.\\${folderPath}\\${username}`, (err, files) => {
@@ -179,14 +134,6 @@ const getFiles = (folderPath, username) => (new Promise((resolve) => {
     })
 }))
 
-const isEmpty = (path) => (
-    new Promise((resolve) => {
-        fs.stat(path, (err, stats) => {
-            if (err) resolve(0)
-            resolve(stats.size === 0)
-        })
-    })
-)
 
 const watch = async (data, folderPath, name) => {
     const userFolders = fs.existsSync(`.\\${folderPath}`) ? fs.readdirSync(`.\\${folderPath}`, { withFileTypes:true }).filter(f => f.isDirectory()).map(f => f.name) : []
@@ -364,7 +311,7 @@ ipcMain.handle("open-in-explorer", async (event, args) => {
 })
 
 const QRCode = require("qrcode")
-const crypto = require("crypto")
+const crypto = require("crypto");
 
 ipcMain.handle("open-onboard-window", async (event, args) => {
     win = new BrowserWindow({
