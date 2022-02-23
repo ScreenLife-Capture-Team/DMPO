@@ -4,6 +4,7 @@ class Downloader {
     constructor() {
         this.queue = [];
         this.maxNumDownloads = 1000;
+        this.downloading = false
     }
 
     addFilesToQueue(files) {
@@ -21,10 +22,15 @@ class Downloader {
     }
 
     async downloadProcess() {
+        if (this.downloading) {
+            return;
+        }
+        this.downloading = true
         while (this.queue.length > 0) {
             const file = this.queue.shift();
             await ensureDownload(file);
         }
+        this.downloading = false
     }
 }
 
