@@ -3,7 +3,7 @@ const fs = require("fs")
 const { Storage } = require("@google-cloud/storage");
 const { timePassedFromDate } = require("./util");
 const checkInternetConnected = require('check-internet-connected');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { Downloader } = require("./downloader");
 
 let decryptionQueue = []

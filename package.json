@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^5.3.0",
-    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "check-internet-connected": "^2.0.5",
     "qrcode": "^1.5.0",
     "react": "^17.0.0"
