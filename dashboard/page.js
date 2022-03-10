@@ -103,14 +103,14 @@ function render() {
     }
     buttonBox.appendChild(button)
 
-    button = createNode("p", `Decrypt${ canCensor ? ' and Censor All' : ''}`, "button default-hidden")
-    button.id = "decrypt-all-button"
-    button.onclick = () => {
-        data.forEach(async (user) => {
-            ipcRenderer.invoke("decrypt-for-user", {...user, acensor: canCensor} )
-        })
-    }
-    buttonBox.appendChild(button)
+    // button = createNode("p", `Decrypt${ canCensor ? ' and Censor All' : ''}`, "button default-hidden")
+    // button.id = "decrypt-all-button"
+    // button.onclick = () => {
+    //     data.forEach(async (user) => {
+    //         ipcRenderer.invoke("decrypt-for-user", {...user, acensor: canCensor} )
+    //     })
+    // }
+    // buttonBox.appendChild(button)
 
     header.appendChild(buttonBox)
 
