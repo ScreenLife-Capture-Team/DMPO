@@ -20,7 +20,7 @@ console.log(settings);
 const PROJECTID =  settings.projectId
 const BUCKETID = settings.bucketId
 console.log(BUCKETID);
-let PASSPHRASE = "16charpassphrase" // MUST BE 16 CHARACTERS
+let PASSPHRASE = "" // MUST BE 16 CHARACTERS
 
 if (!fs.existsSync("bucket_key.json")) {
     dialog.showErrorBox("Credentials Error", "bucket_key.json file missing. This is a credentials file, and will not be included in the main repository.")
