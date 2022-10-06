@@ -228,7 +228,7 @@ const decrypt = async (event, args) => {
     const decryptorPath = resolve(".\\Decryptor.class")
 
     if (!fs.existsSync(decryptorPath)) {
-        dialog.showErrorBox("Decryptor.class missing.")
+        dialog.showErrorBox("Missing decryptor class", "Decryptor.class missing.")
         return
     }
 
