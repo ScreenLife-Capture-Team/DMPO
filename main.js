@@ -12,13 +12,15 @@ let censoringQueue = []
 const downloader = new Downloader()
 
 let settings = {}
-if (fs.existsSync("settings.json")) {
-    settings = JSON.parse(fs.readFileSync("settings.json"))
+if (fs.existsSync("default-settings.json")) {
+    settings = JSON.parse(fs.readFileSync("default-settings.json"))
 }
+console.log(settings);
 
 const PROJECTID =  settings.projectId
 const BUCKETID = settings.bucketId
-let PASSPHRASE = "" // MUST BE 16 CHARACTERS
+console.log(BUCKETID);
+let PASSPHRASE = "16charpassphrase" // MUST BE 16 CHARACTERS
 
 if (!fs.existsSync("bucket_key.json")) {
     dialog.showErrorBox("Credentials Error", "bucket_key.json file missing. This is a credentials file, and will not be included in the main repository.")
@@ -199,7 +201,18 @@ ipcMain.handle("decrypt-for-user", async (event, args) => {
 });
 
 const decrypt = async (event, args) => {
-    if (await isOnline()) {
+    let mIsOnline = true
+
+    try {
+        console.log("test1")
+        mIsOnline = await isOnline()
+        console.log(mIsOnline)
+    } catch (e) {
+        console.log("await isOnline error")
+        console.error(e)
+    }
+    
+    if (mIsOnline) {
         dialog.showErrorBox("Online Error", "Cannot decrypt while connected to the internet")
         return;
     }
