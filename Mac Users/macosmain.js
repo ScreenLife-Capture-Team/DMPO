@@ -98,8 +98,12 @@ const fetchData = async (event = null) => {
         userData[i].numberInBucket = v.length;
         if (v.length > 0) {
             const filename = v[v.length - 1]?.name
-            const date = filename.substring(filename.length-23, filename.length-4)
+            const noExtension = filename.substring(0, filename.length-4)
+            const date = noExtension?.split("/")[1]
             const dC = date?.split("_")
+            // TODO: debug, remove
+            console.log(dC)
+            // May update: account for the file descriptor added
             userData[i].timeSince = timePassedFromDate(new Date(dC[0], dC[1]-1, dC[2], dC[3], dC[4], dC[5]))
         }
     })

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, ipcRenderer } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog, ipcRenderer, shell } = require("electron");
 const fs = require("fs")
 const { Storage } = require("@google-cloud/storage");
 const { timePassedFromDate } = require("./util");
@@ -20,7 +20,7 @@ console.log(settings);
 const PROJECTID =  settings.projectId
 const BUCKETID = settings.bucketId
 console.log(BUCKETID);
-let PASSPHRASE = "" // MUST BE 16 CHARACTERS
+let PASSPHRASE = "16charpassphrase" // MUST BE 16 CHARACTERS
 
 if (!fs.existsSync("bucket_key.json")) {
     dialog.showErrorBox("Credentials Error", "bucket_key.json file missing. This is a credentials file, and will not be included in the main repository.")
@@ -28,8 +28,8 @@ if (!fs.existsSync("bucket_key.json")) {
 }
 
 const { resolve } = require("path");
-const pythonPath = resolve("..\\censoring-scripts\\venv\\Scripts\\python.exe")
-const scriptPath = resolve("..\\censoring-scripts\\main.py")
+const pythonPath = resolve("../censoring-scripts/venv/Scripts/python.exe")
+const scriptPath = resolve("../censoring-scripts/main.py")
 
 const CANCENSOR = fs.existsSync(pythonPath) && fs.existsSync(scriptPath)
 
@@ -48,6 +48,7 @@ function createWindow() {
         height: 800,
         webPreferences: {
             nodeIntegration: true,
+            contextIsolation: false
         },
     });
 
@@ -97,8 +98,12 @@ const fetchData = async (event = null) => {
         userData[i].numberInBucket = v.length;
         if (v.length > 0) {
             const filename = v[v.length - 1]?.name
-            const date = filename.substring(filename.length-23, filename.length-4)
+            const noExtension = filename.substring(0, filename.length-4)
+            const date = noExtension?.split("/")[1]
             const dC = date?.split("_")
+            // TODO: debug, remove
+            console.log(dC)
+            // May update: account for the file descriptor added
             userData[i].timeSince = timePassedFromDate(new Date(dC[0], dC[1]-1, dC[2], dC[3], dC[4], dC[5]))
         }
     })
@@ -131,14 +136,14 @@ ipcMain.handle("download-images", async (event, args) => {
 });
 
 const getFiles = (folderPath, username) => (new Promise((resolve) => {
-    fs.readdir(`.\\${folderPath}\\${username}`, (err, files) => {
+    fs.readdir(`./${folderPath}/${username}`, (err, files) => {
         resolve(err ? [] : files.filter(f => !f.endsWith(".json")))
     })
 }))
 
 
 const watch = async (data, folderPath, name) => {
-    const userFolders = fs.existsSync(`.\\${folderPath}`) ? fs.readdirSync(`.\\${folderPath}`, { withFileTypes:true }).filter(f => f.isDirectory()).map(f => f.name) : []
+    const userFolders = fs.existsSync(`./${folderPath}`) ? fs.readdirSync(`./${folderPath}`, { withFileTypes:true }).filter(f => f.isDirectory()).map(f => f.name) : []
     const userFiles = await Promise.all(userFolders.map(un => getFiles(folderPath, un)))
     const userNumFiles = userFolders.reduce((a, f, i) => ({ ...a, [f]: userFiles[i].length }), {})
     const dataWithNumFiles = data.map((d) => {
@@ -225,15 +230,15 @@ const decrypt = async (event, args) => {
 
     const key = decipher(args)
     const javaPath = settings.javaPath || "java.exe"
-    const decryptorPath = resolve(".\\Decryptor.class")
+    const decryptorPath = resolve("./Decryptor.class")
 
     if (!fs.existsSync(decryptorPath)) {
         dialog.showErrorBox("Missing decryptor class", "Decryptor.class missing.")
         return
     }
 
-    const folderName = resolve(`.\\encrypted\\${args.hashedKey.slice(0, 8)}\\`)
-    const destFolderName = resolve(`.\\decrypted\\${args.hashedKey.slice(0, 8)}\\`)
+    const folderName = resolve(`./encrypted/${args.hashedKey.slice(0, 8)}/`)
+    const destFolderName = resolve(`./decrypted/${args.hashedKey.slice(0, 8)}/`)
 
     if (!fs.existsSync(folderName)) {
         dialog.showErrorBox("Missing folder error", `Missing folder "${folderName}"`)
@@ -284,8 +289,8 @@ ipcMain.handle("censor-for-user", async (event, args) => {
 const censor = (args) => {
     console.log("Censoring (A) for user", args)
 
-    const pythonPath = resolve("..\\censoring-scripts\\venv\\Scripts\\python.exe")
-    const scriptPath = resolve("..\\censoring-scripts\\main.py")
+    const pythonPath = resolve("../censoring-scripts/venv/Scripts/python.exe")
+    const scriptPath = resolve("../censoring-scripts/main.py")
 
     if (!fs.existsSync(pythonPath) || !fs.existsSync(scriptPath)) {
         dialog.showMessageBoxSync({
@@ -295,8 +300,8 @@ const censor = (args) => {
         return
     }
 
-    const folderName = resolve(`.\\decrypted\\${args.hashedKey.slice(0, 8)}\\`)
-    const destFolderName = resolve(`.\\cleaned_automated\\${args.hashedKey.slice(0, 8)}\\`)
+    const folderName = resolve(`./decrypted/${args.hashedKey.slice(0, 8)}/`)
+    const destFolderName = resolve(`./cleaned_automated/${args.hashedKey.slice(0, 8)}/`)
 
     if (!fs.existsSync(destFolderName)) 
         fs.mkdirSync(destFolderName, { recursive: true  })
@@ -320,7 +325,9 @@ const censor = (args) => {
 
 ipcMain.handle("open-in-explorer", async (event, args) => {
     console.log("Opening in explorer", args)
-    spawn("explorer.exe", [resolve(args)], )
+    // spawn("explorer.exe", [resolve(args)], )
+    shell.openPath(resolve(args))
+
 })
 
 const QRCode = require("qrcode")
@@ -332,6 +339,7 @@ ipcMain.handle("open-onboard-window", async (event, args) => {
         height: 800,
         webPreferences: {
             nodeIntegration: true,
+            contextIsolation: false
         },
     });
     win.loadFile("onboarding/onboarding.html");

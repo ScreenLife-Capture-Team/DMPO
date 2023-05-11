@@ -1,5 +1,5 @@
 {
-    "javaPath": "C:/jdk-15.0.1/bin/java.exe",
-    "projectId": "fill in projectID here",
-    "bucketId": "fill in bucket ID here"
+    "javaPath": "C:/Program Files/Java/jdk-15.0.2/bin/java.exe",
+    "projectId": "Screenlife-battery-test",
+    "bucketId": "battery-test-bucket1"
 }

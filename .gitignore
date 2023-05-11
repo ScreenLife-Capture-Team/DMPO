@@ -119,6 +119,7 @@ dist
 encrypted
 decrypted
 cleaned_automated
+keys_old
 
 mongo_creds.json
 user_data.json
