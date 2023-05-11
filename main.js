@@ -89,6 +89,8 @@ const fetchData = async (event = null) => {
     // Fetches and combines user and image data
 
     const userData = getUserData();
+    console.log("userdata:")
+    console.log(userData);
     const imageData = await Promise.all(userData.map(ud => fetchUserImages(ud.hashedKey.slice(0, 8 ))))
 
     if (event) event.sender.send("update-status", "Processing data..") 
@@ -115,6 +117,8 @@ ipcMain.handle("fetch-data", async (event, args) => {
     data = getUserData();
     try {
         data = await fetchData(event);
+        console.log("fetching user data:")
+        console.log(data)
     }
     catch (err) {
         console.log('err', err)
